@@ -2,8 +2,9 @@ export param_struct
 export pool_struct
 export sample_struct
 
-struct param_struct
+mutable struct param_struct
     n_species::Int64
+    n_resources::Int64
     present_species::Array{Int64}
     C::Array{Float64, 3}
     D::Matrix{Int64}
