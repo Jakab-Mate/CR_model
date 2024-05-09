@@ -1,6 +1,7 @@
 using DifferentialEquations
 
-function affect!(integrator, t_inv, start_time, n_invaders, n_species)
+function affect!(integrator, t_inv, start_time, n_invaders, n_species, cutoff)
+    integrator.p.present_species = findall(x -> x > cutoff, integrator.u[1:(n_species+n_invaders)])
     println("affect outside")
     if integrator.t >= start_time
         println("affect inside")
@@ -12,9 +13,9 @@ function affect!(integrator, t_inv, start_time, n_invaders, n_species)
     end
 end
 
-function create_callbacks(t_inv, start_time, n_invaders, n_species)
+function create_callbacks(t_inv, start_time, n_invaders, n_species, cutoff)
     cb = PeriodicCallback(
-        integrator -> affect!(integrator, t_inv, start_time, n_invaders, n_species), t_inv
+        integrator -> affect!(integrator, t_inv, start_time, n_invaders, n_species, cutoff), t_inv
     )
     return cb
 end
