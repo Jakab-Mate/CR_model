@@ -14,6 +14,7 @@ n_species = 5
 n_invaders = 100
 t_inv = 25
 t_inv_0 = 100
+cutoff = 0.0001
 D, W_ba = generative_functions.create_metabolism(rng, n_resources=n_resources)
 pool = generative_functions.create_species_pool(rng, D,
     n_families=10, 
@@ -28,7 +29,7 @@ pool = generative_functions.create_species_pool(rng, D,
 
 s = sample_pool(rng, pool, n_resources, n_species, n_invaders)
 
-present_species = 1:20 # calculate_present_species()
+present_species = 1:n_species # calculate_present_species()
 
 phi = 0.1
 eta = 0.05
@@ -41,10 +42,11 @@ m = s.m
 
 u0 = vcat(s.species_abundance, s.resource_abundance)
 print("\n Shape u0:", size(u0), "Type:", eltype(u0))
-params = (n_species+n_invaders, n_resources, present_species, C, D, W_ba, n_reactions, n_splits, m, phi, eta, tau, alpha)
+
+params = param_struct(n_species+n_invaders, n_resources, present_species, C, D, W_ba, n_reactions, n_splits, m, phi, eta, tau, alpha)
 
 prob = ODEProblem(equations, u0, t_span, params)
-cb = create_callbacks(t_inv, t_inv_0, n_invaders, n_species)
+cb = create_callbacks(t_inv, t_inv_0, n_invaders, n_species, cutoff)
 
 solution = solve(prob, KenCarp4(autodiff=false), abstol = 1e-10, reltol = 1e-10; saveat=1, callback=cb) #, lsoda(), save_everystep = false
 # solution = solve(prob, alg_hints=[:stiff], abstol = 1e-8, reltol = 1e-8; saveat=1, callback=cb) #, lsoda(), save_everystep = false
