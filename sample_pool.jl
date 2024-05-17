@@ -18,11 +18,13 @@ function sample_pool(rng, p, n_resources::Int64, n_species::Int64=10, n_invaders
     species_m = p.m[species_indices]
     species_n_reactions = p.n_reactions[species_indices]
     species_n_splits = p.n_splits[species_indices]
+    species_a = p.a[species_indices] 
+    species_k = p.k[species_indices]
 
     species_initial_abundances = vcat(rand!(rng, zeros(n_species)), zeros(n_invaders))
     resource_initial_abundances = rand!(rng, zeros(n_resources))
 
     return sample_struct(n_sampled, species_C_matrices, species_family_ids, species_m, species_n_reactions, species_n_splits, 
-    species_initial_abundances, resource_initial_abundances)
+    species_initial_abundances, resource_initial_abundances, species_a, species_k)
 
 end
