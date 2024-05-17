@@ -19,8 +19,10 @@ function sample_reaction_indices(rng, D, number_of_reactions)
     for i in 1:number_of_reactions
         choice = rand(rng, non_zero_pos(helper_D))
         chosen_indices[i] = choice
-        helper_D[:, choice[1]] .= 0
-        helper_D[choice[2], :] .= 0
+        #excluding production and consumption of the same resource
+        #helper_D[:, choice[1]] .= 0
+        #helper_D[choice[2], :] .= 0
+        helper_D[choice[1], choice[2]] = 0
     end
 
     return chosen_indices
