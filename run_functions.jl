@@ -13,7 +13,8 @@ function generic_run(path, D, W_ba, sample::sample_struct;
     eta::Float64=0.1, 
     tau::Union{Vector{Float64}, Nothing}=nothing, 
     alpha::Union{Vector{Float64}, Nothing}=nothing,
-    plot::Bool=true)
+    plot::Bool=true,
+    host_regulation::Bool=true)
 
     if isnothing(tau)
         tau = ones(Float64, n_resources)
@@ -24,7 +25,7 @@ function generic_run(path, D, W_ba, sample::sample_struct;
     end
 
     u0 = vcat(sample.species_abundance, sample.resource_abundance)
-    params = param_struct(n_species+n_invaders, n_resources, 1:n_species, sample.C, D, W_ba, sample.n_reactions, sample.n_splits, sample.m, phi, eta, tau, alpha)
+    params = param_struct(n_species+n_invaders, n_resources, 1:n_species, sample.C, D, W_ba, sample.n_reactions, sample.n_splits, sample.m, phi, eta, tau, alpha, sample.a, sample.k, host_regulation)
 
     prob = ODEProblem(equations, u0, t_span, params)
     cb = create_callbacks(t_inv, t_inv_0, n_invaders, n_species, cutoff)
