@@ -21,6 +21,9 @@ function equations(u, p, t)
 
     for i in p.present_species
         species[i] = (sum(p.C[:,:,i] .* p.W_ba .* u[p.n_species+1:end]') - (p.m[i] + p.phi * p.n_reactions[i] + p.eta * p.n_splits[i])) * u[i]
+        if p.host_regulation
+            species[i] = species[i] * (1 / (1 + exp(p.a[i] * (u[i]-p.k[i]))))
+        end
         #print(size(C[:,:,i]))
         #print(size(C[:,:,i] .* W_ba))
         #print(size(C[:,:,i] .* W_ba .* u[n_species+1:end]))
