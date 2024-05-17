@@ -16,6 +16,9 @@ mutable struct param_struct
     eta::Float64
     tau::Array{Float64}
     alpha::Array{Float64}
+    a::Array{Float64}
+    k::Array{Float64}
+    host_regulation::Bool
 
 end
 
@@ -26,6 +29,8 @@ struct pool_struct
     m::Array{Float64}
     n_reactions::Array{Int64}
     n_splits::Array{Float64}
+    a::Array{Float64}
+    k::Array{Float64}
 
 end
 
@@ -39,5 +44,7 @@ struct sample_struct
     n_splits::Array{Float64}
     species_abundance::Array{Float64}
     resource_abundance::Array{Float64}
+    a::Array{Float64}
+    k::Array{Float64}
 
 end
